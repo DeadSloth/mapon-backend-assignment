@@ -1,0 +1,6 @@
+RewriteEngine On
+
+# Rewrite /rpc/* requests to /rpc/index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^rpc/(.*)$ rpc/index.php [L,QSA]

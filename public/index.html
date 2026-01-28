@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuel Transactions</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Fuel Transactions</h1>
+        </header>
+
+        <main>
+            <!-- Import Section -->
+            <section class="card import-section">
+                <h2>Import Transactions</h2>
+                <form id="import-form">
+                    <div class="form-row">
+                        <div class="form-group file-group">
+                            <label>CSV File</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="csv-file" accept=".csv" required>
+                                <label for="csv-file" class="btn btn-secondary file-input-label">
+                                    <span class="file-input-text">Choose File</span>
+                                </label>
+                                <span class="file-input-name">No file chosen</span>
+                            </div>
+                        </div>
+                        <button type="submit" id="import-btn" class="btn btn-primary">
+                            <span class="btn-text">Import</span>
+                            <span class="btn-loading" hidden>Importing...</span>
+                        </button>
+                    </div>
+                </form>
+                <div id="import-result" class="import-result" hidden></div>
+            </section>
+
+            <!-- Transaction List -->
+            <section class="card">
+                <div class="section-header">
+                    <h2>Transactions</h2>
+                    <div class="section-actions">
+                        <button id="enrich-all-btn" class="btn btn-enrich">Enrich All</button>
+                        <button id="clear-db-btn" class="btn btn-danger">Clear Database</button>
+                        <button id="refresh-btn" class="btn btn-secondary">Refresh</button>
+                    </div>
+                </div>
+
+                <div id="transactions-loading" class="loading" hidden>
+                    Loading transactions...
+                </div>
+
+                <div id="transactions-empty" class="empty-state" hidden>
+                    No transactions found. Import a CSV file to get started.
+                </div>
+
+                <table id="transactions-table" class="transactions-table" hidden>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Card</th>
+                            <th>Station</th>
+                            <th>Product</th>
+                            <th class="text-right">Quantity</th>
+                            <th class="text-right">Amount</th>
+                            <th class="text-center">GPS Status</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions-body">
+                    </tbody>
+                </table>
+
+                <div id="pagination" class="pagination" hidden>
+                    <span id="pagination-info"></span>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
