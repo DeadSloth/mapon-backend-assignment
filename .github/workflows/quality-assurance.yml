@@ -48,9 +48,6 @@ jobs:
             sleep 2
           done
 
-      - name: Setup database
-        run: php bin/setup.php
-
       - name: Run PHPUnit
         run: vendor/bin/phpunit
 
