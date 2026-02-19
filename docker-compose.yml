@@ -43,5 +43,17 @@ services:
       timeout: 5s
       retries: 5
 
+  test_db:
+    container_name: mapon_test_db
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: test_database
+      MYSQL_ROOT_PASSWORD: test_pwd
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_test_data:/var/lib/mysql
+
 volumes:
   mysql_data:
+  mysql_test_data:
