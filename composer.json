@@ -9,7 +9,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0",
-        "phpstan/phpstan": "^2.1"
+        "phpstan/phpstan": "^2.1",
+        "friendsofphp/php-cs-fixer": "^3.94"
     },
     "autoload": {
         "psr-4": {
@@ -28,6 +29,8 @@
         "start": "docker compose up -d",
         "test": "docker exec mapon-php vendor/bin/phpunit",
         "setup": "docker exec mapon-php php bin/setup.php",
-        "lint": "docker exec mapon-php vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=-1"
+        "phpstan": "docker exec mapon-php vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=-1",
+        "cs-fixer": "docker exec mapon-php vendor/bin/php-cs-fixer fix",
+        "check-cs": "docker exec mapon-php vendor/bin/php-cs-fixer check --show-progress=bar --verbose"
     }
 }
