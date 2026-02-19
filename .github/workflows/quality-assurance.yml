@@ -16,7 +16,7 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_DATABASE: fuel_api
+          MYSQL_DATABASE: test_database
           MYSQL_ROOT_PASSWORD: secret
         ports:
           - 3306:3306
@@ -41,11 +41,12 @@ jobs:
 
       - name: Run PHPUnit
         env:
-          DB_HOST: mysql
+          DB_HOST: 127.0.0.1
           DB_PORT: 3306
           DB_NAME: test_database
           DB_USER: root
-          DB_PASS: test_pwd
+          DB_PASS: secret
+          APP_ENV: CI
         run: vendor/bin/phpunit
 
 
