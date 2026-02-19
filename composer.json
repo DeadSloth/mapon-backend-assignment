@@ -27,6 +27,7 @@
     "scripts": {
         "start": "docker compose up -d",
         "test": "docker exec mapon-php vendor/bin/phpunit",
-        "setup": "docker exec mapon-php php bin/setup.php"
+        "setup": "docker exec mapon-php php bin/setup.php",
+        "lint": "docker exec mapon-php vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=-1"
     }
 }
