@@ -24,7 +24,7 @@ class DB
     public static function connection(): PDO
     {
         if (self::$pdo === null) {
-            $driver = $_ENV['DB_DRIVER'] ?? 'sqlite';
+            $driver = $_ENV['DB_DRIVER'] ?? 'mysql';
 
             self::$pdo = match ($driver) {
                 'sqlite' => self::createSqliteConnection(),
