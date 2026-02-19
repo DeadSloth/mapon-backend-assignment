@@ -29,7 +29,9 @@ jobs:
           done
 
       - name: Install Composer dependencies
-        run: docker exec mapon-php composer install --no-interaction --prefer-dist
+        run: |
+          docker exec mapon-php git config --global --add safe.directory /app
+          docker exec mapon-php composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
 
       - name: Run DB setup
         run: docker exec mapon-php php bin/setup.php
