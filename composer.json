@@ -24,8 +24,8 @@
         }
     },
     "scripts": {
-        "test": "phpunit",
-        "setup": "php bin/setup.php",
-        "serve": "php -S localhost:8000 -t public"
+        "start": "docker compose up -d",
+        "test": "docker exec mapon-php vendor/bin/phpunit",
+        "setup": "docker exec mapon-php php bin/setup.php"
     }
 }
