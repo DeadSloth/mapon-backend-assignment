@@ -7,40 +7,87 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+
+  tests:
+    name: PHPUnit Tests
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: fuel_api
+          MYSQL_ROOT_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -psecret"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          extensions: pdo_mysql
+          coverage: none
 
-      - name: Build and start services
-        run: docker compose up -d --build
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
 
-      - name: Wait for DB to be healthy
+      - name: Wait for DB
         run: |
           for i in {1..30}; do
-            if docker exec mapon_db mysqladmin ping -hlocalhost -uroot -psecret --silent; then
+            if mysqladmin ping -h127.0.0.1 -uroot -psecret --silent; then
               break
             fi
             sleep 2
           done
 
-      - name: Install Composer dependencies
-        run: |
-          docker exec mapon-php git config --global --add safe.directory /app
-          docker exec mapon-php composer install --no-interaction --prefer-dist --no-progress --optimize-autoloader
-
-      - name: Run DB setup
-        run: docker exec mapon-php php bin/setup.php
+      - name: Setup database
+        run: php bin/setup.php
 
       - name: Run PHPUnit
-        run: docker exec mapon-php vendor/bin/phpunit
+        run: vendor/bin/phpunit
+
+
+  phpstan:
+    name: Static Analysis (PHPStan)
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
 
       - name: Run PHPStan
-        run: docker exec mapon-php vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=-1
+        run: vendor/bin/phpstan analyse -c phpstan.neon --memory-limit=-1
 
-      - name: Run PHP CS Fixer (dry-run)
-        run: docker exec mapon-php vendor/bin/php-cs-fixer fix --dry-run --diff
+
+  cs:
+    name: Code Style Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Run PHP CS Fixer
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff
