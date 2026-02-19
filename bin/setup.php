@@ -29,7 +29,7 @@ try {
 
     seedVehicles();
 
-    echo "\nSetup complete! Run 'php -S localhost:8000 -t public public/router.php' to start the development server.\n";
+    echo "\nSetup complete!\n";
 
 } catch (PDOException $e) {
     echo "Database error: " . $e->getMessage() . "\n";

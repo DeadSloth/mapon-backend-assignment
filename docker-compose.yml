@@ -2,6 +2,7 @@ name: mapon-backend-assignment
 
 services:
   app:
+    container_name: mapon-php
     build: .
     ports:
       - "80:80"
@@ -27,6 +28,7 @@ services:
         condition: service_healthy
 
   db:
+    container_name: mapon_db
     image: mysql:8.0
     environment:
       MYSQL_DATABASE: fuel_api
