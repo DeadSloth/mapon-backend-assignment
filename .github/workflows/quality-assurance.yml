@@ -39,16 +39,13 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
-      - name: Wait for DB
-        run: |
-          for i in {1..30}; do
-            if mysqladmin ping -h127.0.0.1 -uroot -psecret --silent; then
-              break
-            fi
-            sleep 2
-          done
-
       - name: Run PHPUnit
+        env:
+          DB_HOST: mysql
+          DB_PORT: 3306
+          DB_NAME: test_database
+          DB_USER: root
+          DB_PASS: test_pwd
         run: vendor/bin/phpunit
 
 
