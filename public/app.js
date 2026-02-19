@@ -6,6 +6,7 @@
 
 const API_BASE = '/rpc';
 const INTERNAL_API_KEY = 'test-api-key-12345';
+vehicleFilterInitialized = false;
 
 // DOM Elements
 const elements = {
@@ -22,6 +23,8 @@ const elements = {
     transactionsEmpty: document.getElementById('transactions-empty'),
     pagination: document.getElementById('pagination'),
     paginationInfo: document.getElementById('pagination-info'),
+    vehicleFilter: document.getElementById('vehicle-filter'),
+    orderBy: document.getElementById('order-by'),
 };
 
 /**
@@ -63,7 +66,11 @@ async function loadTransactions() {
     hideElement(elements.pagination);
 
     try {
-        const result = await rpc('Transaction__GetList', { limit: 100 });
+        const result = await rpc('Transaction__GetList', {
+            limit: 100,
+            vehicle_number: elements.vehicleFilter.value || undefined,
+            order_by: elements.orderBy.value || undefined,
+        });
 
         if (result.items.length === 0) {
             showElement(elements.transactionsEmpty);
@@ -90,6 +97,7 @@ function renderTransactions(transactions) {
     elements.transactionsBody.innerHTML = transactions.map(t => `
         <tr>
             <td>${formatDate(t.transaction_date)}</td>
+            <td>${escapeHtml(t.vehicle_number || '-')}</td>
             <td><span class="card-number">${maskCardNumber(t.card_number)}</span></td>
             <td>${escapeHtml(t.station_name || '-')}</td>
             <td><span class="product-badge product-${t.product_type}">${t.product_type}</span></td>
@@ -103,7 +111,31 @@ function renderTransactions(transactions) {
             </td>
         </tr>
     `).join('');
+
+    // Update vehicle filter options if not initialized
+    if (!vehicleFilterInitialized) {
+        updateVehicleFilter(transactions);
+        vehicleFilterInitialized = true;
+    }
 }
+
+/**
+ * Render vehicle filter options.
+ */
+function updateVehicleFilter(transactions) {
+    const vehicles = [...new Set(transactions.map(t => t.vehicle_number))];
+
+    const current = elements.vehicleFilter.value;
+
+    elements.vehicleFilter.innerHTML =
+        '<option value="">All Vehicles</option>' +
+        vehicles.map(v =>
+            `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`
+        ).join('');
+
+    elements.vehicleFilter.value = current;
+}
+
 
 /**
  * Render enrichment status with GPS data if available.
@@ -371,6 +403,8 @@ elements.refreshBtn.addEventListener('click', loadTransactions);
 elements.clearDbBtn.addEventListener('click', handleClearDb);
 elements.enrichAllBtn.addEventListener('click', handleEnrichAll);
 elements.csvFileInput.addEventListener('change', updateFileInputLabel);
+elements.vehicleFilter.addEventListener('change', loadTransactions);
+elements.orderBy.addEventListener('change', loadTransactions);
 
 // Initial load
 document.addEventListener('DOMContentLoaded', loadTransactions);

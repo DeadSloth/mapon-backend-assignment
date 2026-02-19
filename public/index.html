@@ -41,11 +41,21 @@
             <section class="card">
                 <div class="section-header">
                     <h2>Transactions</h2>
-                    <div class="section-actions">
-                        <button id="enrich-all-btn" class="btn btn-enrich">Enrich All</button>
-                        <button id="clear-db-btn" class="btn btn-danger">Clear Database</button>
-                        <button id="refresh-btn" class="btn btn-secondary">Refresh</button>
-                    </div>
+                <div class="section-actions">
+
+                    <select id="vehicle-filter" class="filter-select btn btn-secondary">
+                        <option value="">All Vehicles</option>
+                    </select>
+
+                    <select id="order-by" class="filter-select btn btn-secondary">
+                        <option value="DESC">Newest First</option>
+                        <option value="ASC">Oldest First</option>
+                    </select>
+
+                    <button id="enrich-all-btn" class="btn btn-enrich">Enrich All</button>
+                    <button id="clear-db-btn" class="btn btn-danger">Clear Database</button>
+                    <button id="refresh-btn" class="btn btn-secondary">Refresh</button>
+                </div>
                 </div>
 
                 <div id="transactions-loading" class="loading" hidden>
@@ -60,6 +70,7 @@
                     <thead>
                         <tr>
                             <th>Date</th>
+                            <th>Vehicle</th>
                             <th>Card</th>
                             <th>Station</th>
                             <th>Product</th>
