@@ -4,3 +4,4 @@
 .phpunit.result.cache
 .idea/
 .phpunit.cache/
+.php-cs-fixer.cache

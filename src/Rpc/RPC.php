@@ -32,8 +32,6 @@ use App\Rpc\Section\Base;
  */
 class RPC
 {
-    private ?string $error = null;
-
     public function handle(): string
     {
         try {
@@ -136,7 +134,7 @@ class RPC
      * Method format: "Section__Action" maps to \App\Rpc\Section\{Section}\{Action}
      * Example: "Transaction__GetList" -> \App\Rpc\Section\Transaction\GetList
      */
-    private function resolveMethodClass(string $method): ?string
+    private function resolveMethodClass(?string $method = null): ?string
     {
         // Extract section and action (format: Section__Action)
         if (!str_contains($method, '__')) {
