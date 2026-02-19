@@ -28,11 +28,13 @@ class GetList extends Base
     private ?string $vehicleNumber;
     private int $limit;
     private int $offset;
+    private ?string $orderBy;
 
     public function __construct(stdClass $params)
     {
         parent::__construct($params);
         $this->vehicleNumber = $this->optionalParam('vehicle_number', 'string');
+        $this->orderBy = $this->optionalParam('order_by', 'string', 'DESC');
         $this->limit = $this->optionalParam('limit', 'int', 100);
         $this->offset = $this->optionalParam('offset', 'int', 0);
     }
@@ -56,11 +58,30 @@ class GetList extends Base
             $total = $repository->countAll();
         }
 
+        $transactions = $this->sortTransactions($transactions);
+
+        $transactions = array_map(fn(TransactionDTO $t) => $t->toArray(), $transactions);
+
         return [
-            'items' => array_map(fn(TransactionDTO $t) => $t->toArray(), $transactions),
+            'items' => $transactions,
             'total' => $total,
             'limit' => $this->limit,
             'offset' => $this->offset,
         ];
+    }
+
+    private function sortTransactions(array $transactions): array
+    {
+        usort($transactions, function (TransactionDTO $a, TransactionDTO $b) {
+            $direction = strtoupper($this->orderBy ?? 'DESC');
+
+            $dateA = strtotime($a->transactionDate);
+            $dateB = strtotime($b->transactionDate);
+
+            return $direction === 'ASC'
+                ? $dateA <=> $dateB
+                : $dateB <=> $dateA;
+        });
+        return $transactions;
     }
 }

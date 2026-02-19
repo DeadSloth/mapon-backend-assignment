@@ -383,6 +383,7 @@ header h1 {
     color: #6b7280;
 }
 
+
 /* Responsive */
 @media (max-width: 768px) {
     .form-row {
