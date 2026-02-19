@@ -383,37 +383,6 @@ header h1 {
     color: #6b7280;
 }
 
-/* Vehicle filter container */
-.vehicle-filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 12px;
-}
-
-/* Vehicle filter buttons */
-.vehicle-filters .btn {
-    padding: 6px 12px;
-    font-size: 13px;
-    border-radius: 4px;
-    background-color: #e5e7eb;
-    color: #374151;
-    transition: background-color 0.15s ease;
-}
-
-.vehicle-filters .btn:hover:not(:disabled) {
-    background-color: #d1d5db;
-}
-
-.vehicle-filters .btn.active {
-    background-color: #2563eb; /* primary blue */
-    color: white;
-}
-
-.vehicle-filters .btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
 
 /* Responsive */
 @media (max-width: 768px) {
