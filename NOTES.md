@@ -72,5 +72,3 @@ Added EnrichAll endpoint
 Added unit tests
 Added integration tests
 
-
-# Code smells
