@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Mapon;
+namespace App\Domain\Mapon\Exceptions;
 
 use Exception;
 

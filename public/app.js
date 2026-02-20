@@ -343,6 +343,7 @@ async function enrichTransaction(id) {
             await loadTransactions();
         } else {
             showError('Enrichment failed: ' + (result.message || 'Unknown error'));
+            await loadTransactions();
         }
     } catch (error) {
         console.error('Enrichment failed:', error);
