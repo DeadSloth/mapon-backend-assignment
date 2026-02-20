@@ -69,8 +69,8 @@ class ApiClient
             $query['key'] = $this->apiKey;
 
             $response = $this->http->request(
-                $method, 
-                ltrim($uri, '/'), 
+                $method,
+                ltrim($uri, '/'),
                 ['query' => $query],
             );
             $body = (string) $response->getBody();

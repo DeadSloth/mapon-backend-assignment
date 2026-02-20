@@ -14,4 +14,3 @@ class MaponEnrichmentNotFoundException extends MaponApiException
         return new self("Enrichment data not found for transaction ID {$id}");
     }
 }
-

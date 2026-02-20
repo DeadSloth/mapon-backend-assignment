@@ -15,7 +15,7 @@ final readonly class MaponUnitData
         public ?int $odometer,
         public ?string $datetime,
     ) {}
-    
+
     /**
      * Map API unit array to UnitData DTO
      */

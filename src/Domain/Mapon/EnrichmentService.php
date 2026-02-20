@@ -15,18 +15,16 @@ use RuntimeException;
 
 class EnrichmentService
 {
-    
     private int $completed = 0;
     private int $failed = 0;
     private int $notFound = 0;
     private int $skipped = 0;
     private ?string $latestMessage = null;
-    
+
     public function __construct(
         private MaponClient $provider,
         private TransactionRepository $repository = new TransactionRepository(),
-    ) {
-    }
+    ) {}
 
     /**
      * Process enrichment for a single transaction.
@@ -128,10 +126,10 @@ class EnrichmentService
 
     private function validateEnrichment(?MaponUnitData $unitData): bool
     {
-        if(null === $unitData) {
+        if (null === $unitData) {
             return false;
         }
-        
+
         if (!isset($unitData->odometer)) {
             throw new MaponEnrichmentFailedException('Mileage data missing.');
         }

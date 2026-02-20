@@ -14,4 +14,3 @@ class MaponEnrichmentFailedException extends MaponApiException
         return new self("Enrichment data failed for transaction ID {$id}: {$reason}");
     }
 }
-

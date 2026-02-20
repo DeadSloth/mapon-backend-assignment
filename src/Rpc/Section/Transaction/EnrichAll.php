@@ -51,9 +51,9 @@ class EnrichAll extends Base
         $enrichmentService = new EnrichmentService(
             new MaponClient(
                 new ApiClient(
-                    $_ENV['MAPON_API_URL'], 
+                    $_ENV['MAPON_API_URL'],
                     $_ENV['MAPON_API_KEY'],
-                    )
+                )
             ),
         );
 
