@@ -6,6 +6,7 @@ namespace App\Rpc\Section\Transaction;
 
 use App\Domain\Transaction\DTO\Transaction as TransactionDTO;
 use App\Domain\Transaction\Repository\TransactionRepository;
+use App\Lib\Transaction;
 use App\Rpc\Section\Base;
 use stdClass;
 
@@ -58,9 +59,9 @@ class GetList extends Base
             $total = $repository->countAll();
         }
 
-        $transactions = $this->sortTransactions($transactions);
+        $this->sortTransactions($transactions);
 
-        $transactions = array_map(fn(TransactionDTO $t) => $t->toArray(), $transactions);
+        $transactions = array_map(fn(Transaction $t) => TransactionDTO::fromModel($t)->toArray(), $transactions);
 
         return [
             'items' => $transactions,
@@ -70,18 +71,17 @@ class GetList extends Base
         ];
     }
 
-    private function sortTransactions(array $transactions): array
+    private function sortTransactions(array $transactions): void
     {
-        usort($transactions, function (TransactionDTO $a, TransactionDTO $b) {
+        usort($transactions, function (Transaction $a, Transaction $b) {
             $direction = strtoupper($this->orderBy ?? 'DESC');
 
-            $dateA = strtotime($a->transactionDate);
-            $dateB = strtotime($b->transactionDate);
+            $dateA = strtotime($a->transaction_date);
+            $dateB = strtotime($b->transaction_date);
 
             return $direction === 'ASC'
                 ? $dateA <=> $dateB
                 : $dateB <=> $dateA;
         });
-        return $transactions;
     }
 }

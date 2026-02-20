@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Lib;
 
+use DateTimeImmutable;
+
 /**
  * Fuel transaction record from card provider imports.
  *
@@ -126,6 +128,14 @@ class Transaction extends Model
         $this->enrichment_status = self::ENRICHMENT_FAILED;
         $this->enriched_at = date('Y-m-d H:i:s');
     }
+    /**
+     * Mark as enrichment failed.
+     */
+    public function markEnrichmentNotFound(?string $reason = null): void
+    {
+        $this->enrichment_status = self::ENRICHMENT_NOT_FOUND;
+        $this->enriched_at = date('Y-m-d H:i:s');
+    }
 
     /**
      * Apply enrichment data from Mapon API.
@@ -136,6 +146,17 @@ class Transaction extends Model
         $this->gps_longitude = $longitude;
         $this->odometer_gps = $odometer;
         $this->enrichment_status = self::ENRICHMENT_COMPLETED;
+        $this->updated_at = date('Y-m-d H:i:s');
         $this->enriched_at = date('Y-m-d H:i:s');
+    }
+
+    public function setTransactionDate(string $date): string
+    {
+        return $this->transaction_date = $date;
+    }
+
+    public function getTransactionDate(): string
+    {
+        return $this->transaction_date;
     }
 }

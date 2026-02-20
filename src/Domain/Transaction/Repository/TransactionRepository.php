@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Transaction\Repository;
 
-use App\Domain\Transaction\DTO\Transaction as TransactionDTO;
 use App\Lib\Transaction as TransactionModel;
 use App\Lib\DB;
 
@@ -20,16 +19,11 @@ class TransactionRepository
      */
     public function getAll(int $limit = 100): array
     {
-        $models = TransactionModel::getAll(
+        return TransactionModel::getAll(
             null,
             [],
             'transaction_date DESC',
             $limit
-        );
-
-        return array_map(
-            fn(TransactionModel $m) => TransactionDTO::fromModel($m),
-            $models
         );
     }
 
@@ -38,12 +32,15 @@ class TransactionRepository
      */
     public function getByVehicleNumber(string $vehicleNumber, int $limit = 100, int $offset = 0): array
     {
-        $models = TransactionModel::getByVehicleNumber($vehicleNumber, $limit);
+        return TransactionModel::getByVehicleNumber($vehicleNumber, $limit);
+    }
 
-        return array_map(
-            fn(TransactionModel $m) => TransactionDTO::fromModel($m),
-            $models
-        );
+    /**
+     * Get transactions for a specific vehicle.
+     */
+    public function getById(int $id): ?TransactionModel
+    {
+        return TransactionModel::get($id);
     }
 
     /**
